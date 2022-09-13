@@ -17,7 +17,7 @@ function App() {
 
   const url = 'https://reqres.in/api/products'
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   const [pageNr, setPageNr] = useState(1)  
   const pageItems = 5;
@@ -34,7 +34,7 @@ function App() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch(`${url}?page=${pageNr}&per_page=${pageItems}`)
+    fetch(`${url}?page=${page}&per_page=${pageItems}`)
     .then(response => response.json())    
     .then(data => (console.log(data), setData(data.data), setTotalItems(data.total)))       
 

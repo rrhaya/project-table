@@ -13,10 +13,10 @@ export default function DataTable({data, totalItems, page, setPage, pageNr, setP
   const [rowsPerPage, setRowsPerPage] = useState(5);  
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage); 
+    setPage(newPage+1); 
     setPageNr(newPage+1);
-    console.log(newPage)  
-    console.log(page)    
+    console.log(newPage); 
+    console.log(page);  
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -37,7 +37,7 @@ export default function DataTable({data, totalItems, page, setPage, pageNr, setP
           </TableRow>
         </TableHead>
         <TableBody>
-        {data && data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(((element) => (
+        {data && data.map(((element) => (
             <TableRow key={element.id} style={{backgroundColor: element.color}}>
               <TableCell>{element.id}</TableCell>
               <TableCell>{element.name}</TableCell>
@@ -56,7 +56,7 @@ export default function DataTable({data, totalItems, page, setPage, pageNr, setP
         // count={data.length}         
         count={totalItems}
         rowsPerPage={rowsPerPage}
-        page={page} 
+        page={page -1} 
         onPageChange={handleChangePage}        
         onRowsPerPageChange={handleChangeRowsPerPage}
       /> 
