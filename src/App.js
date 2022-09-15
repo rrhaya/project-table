@@ -60,9 +60,8 @@ function App() {
           <FormGroup style={{margin: '0 auto', display: 'block', marginTop: '20px'}}>
             <FormControlLabel control={<Switch checked={darkMode} onChange={handleChange}/>} label="Dark mode switch" />
           </FormGroup>
-          <div style={{height: '50px'}}></div>
-          {data && !query && <DataTable data={data} totalItems={totalItems} page={page} setPage={setPage} />}
-          {data && query && <DataTable data={data.filter((element) => (element.id == query))} totalItems={totalItems} page={page} setPage={setPage} />}
+          <div style={{height: '50px'}}></div>          
+          {data && <DataTable data={query ? data.filter((element) => (element.id == query)) : data} totalItems={totalItems} page={page} setPage={setPage}/>}
         </div>         
       </Paper>
     </ThemeProvider>    
