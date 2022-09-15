@@ -8,15 +8,12 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TablePagination from "@mui/material/TablePagination";
 
-export default function DataTable({data, totalItems, page, setPage, pageNr, setPageNr}) {
+export default function DataTable({ data, totalItems, page, setPage }) {
   
   const [rowsPerPage, setRowsPerPage] = useState(5);  
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage); 
-    setPageNr(newPage+1);
-    console.log(newPage)  
-    console.log(page)    
+  const handleChangePage = (event, newPage) => {    
+    setPage(newPage+1);       
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -36,8 +33,8 @@ export default function DataTable({data, totalItems, page, setPage, pageNr, setP
             <TableCell>Pantone</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-        {data && data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(((element) => (
+        <TableBody>        
+        {data && data.map(((element) => (
             <TableRow key={element.id} style={{backgroundColor: element.color}}>
               <TableCell>{element.id}</TableCell>
               <TableCell>{element.name}</TableCell>
@@ -52,18 +49,15 @@ export default function DataTable({data, totalItems, page, setPage, pageNr, setP
 
       <TablePagination         
         component="div"
-        rowsPerPageOptions={[5]}
-        // count={data.length}         
+        rowsPerPageOptions={[5]}             
         count={totalItems}
-        rowsPerPage={rowsPerPage}
-        page={page} 
+        rowsPerPage={rowsPerPage}        
+        page={page -1} 
         onPageChange={handleChangePage}        
         onRowsPerPageChange={handleChangeRowsPerPage}
       /> 
 
       {data.length === 0 && <p>Product with searched id doesnt exist </p>}
-     
-      data.length { data.length} 
     </TableContainer>
   )
 }

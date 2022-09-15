@@ -11,19 +11,12 @@ import { useSearchParams } from 'react-router-dom'
 
 function App() {
 
-  const [ searchParams, setSearchParams] = useSearchParams({page: 1});  
-  
+  const [ searchParams, setSearchParams] = useSearchParams({page: 1});    
   const [darkMode, setDarkMode] = useState(false);
-
-  const url = 'https://reqres.in/api/products'
-
-  const [page, setPage] = useState(0);
-
-  const [pageNr, setPageNr] = useState(1)  
+  const url = 'https://reqres.in/api/products'  
+  const [page, setPage] = useState(1);  
   const pageItems = 5;
-
-  const [totalItems, setTotalItems] = useState(0); 
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);   
 
   const theme = createTheme({
     palette: {      
@@ -33,29 +26,15 @@ function App() {
 
   const [data, setData] = useState(null);
 
-  useEffect(() => {
-    fetch(`${url}?page=${pageNr}&per_page=${pageItems}`)
+  useEffect(() => {    
+    fetch(`${url}?page=${page}&per_page=${pageItems}`)
     .then(response => response.json())    
     .then(data => (console.log(data), setData(data.data), setTotalItems(data.total)))       
 
-    setSearchParams({page: pageNr})
-    console.log(pageNr)
+    setSearchParams({page: page})
+  },[page])
 
-    if(pageNr == 2) {
-      data.unshift([1,2,3,4,5])
-    }  
-
-  },[pageNr])
-
-  const [query, setQuery] = useState(null); 
-
-  const changePage = () => {   
-    setPageNr(prev => (prev+1));  
-  }
-
-  const changePage2 = () => {
-    setPageNr(prev => (prev-1));      
-  }
+  const [query, setQuery] = useState(null);   
 
   const requestSearch = (searched) => { 
     setQuery(searched)  
@@ -82,11 +61,9 @@ function App() {
             <FormControlLabel control={<Switch checked={darkMode} onChange={handleChange}/>} label="Dark mode switch" />
           </FormGroup>
           <div style={{height: '50px'}}></div>
-          {data && !query && <DataTable data={data} totalItems={totalItems} page={page} setPage={setPage} pageNr={pageNr} setPageNr={setPageNr} />}
-          {data && query && <DataTable data={data.filter((element) => (element.id == query))} totalItems={totalItems} page={page} setPage={setPage} pageNr={pageNr} setPageNr={setPageNr} />}
-        </div> 
-        <button onClick={changePage}>change+1</button>
-        <button onClick={changePage2}>change-1</button>        
+          {data && !query && <DataTable data={data} totalItems={totalItems} page={page} setPage={setPage} />}
+          {data && query && <DataTable data={data.filter((element) => (element.id == query))} totalItems={totalItems} page={page} setPage={setPage} />}
+        </div>         
       </Paper>
     </ThemeProvider>    
   );
