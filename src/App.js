@@ -17,6 +17,7 @@ function App() {
   const [page, setPage] = useState(1);  
   const pageItems = 5;
   const [totalItems, setTotalItems] = useState(0);   
+  const [query, setQuery] = useState(null);   
 
   const theme = createTheme({
     palette: {      
@@ -26,26 +27,19 @@ function App() {
 
   const [data, setData] = useState(null);
 
-  useEffect(() => {    
-    fetch(`${url}?page=${page}&per_page=${pageItems}`)
-    .then(response => response.json())    
-    .then(data => (console.log(data), setData(data.data), setTotalItems(data.total)))       
-
-    setSearchParams({page: page})
-  },[page])
-
-  const [query, setQuery] = useState(null);   
-
   const requestSearch = (searched) => { 
-    setQuery(searched)  
-
-   const id = searchParams.get('id')
-    if (searched) {
-    setSearchParams({id: searched})
-    } else {      
-      setSearchParams()
-    }
+    setQuery(searched)
   }
+
+  useEffect(() => {  
+    query && fetch(`${url}?id=${query}`)    
+    .then(response => response.json())    
+    .then(data => (setData(data.data), setTotalItems(data.total), setSearchParams({id: query})))       
+        
+    !query && fetch(`${url}?page=${page}&per_page=${pageItems}`)
+    .then(response => response.json())    
+    .then(data => (setData(data.data), setTotalItems(data.total), setSearchParams({page: page})))      
+  },[page, query])
   
   const handleChange = () => {
     setDarkMode(!darkMode)
@@ -54,14 +48,14 @@ function App() {
   return (    
    <ThemeProvider theme={theme}>
       <Paper style={{height: '100vh'}}>
-        <div className="App">      
+        <div className="App"> 
           <div style={{height: '50px'}}></div>  
-          <TextField id="outlined-basic" label={"Search"} variant="outlined" onInput={(e) => requestSearch(e.target.value) }/>   
+          <TextField type="number" id="outlined-basic" label={"Search"} variant="outlined" onInput={(e) => requestSearch(e.target.value) }/>   
           <FormGroup style={{margin: '0 auto', display: 'block', marginTop: '20px'}}>
             <FormControlLabel control={<Switch checked={darkMode} onChange={handleChange}/>} label="Dark mode switch" />
           </FormGroup>
-          <div style={{height: '50px'}}></div>          
-          {data && <DataTable data={query ? data.filter((element) => (element.id == query)) : data} totalItems={totalItems} page={page} setPage={setPage}/>}
+          <div style={{height: '50px'}}></div> 
+          {data ? <DataTable data={data} totalItems={totalItems} page={page} setPage={setPage} /> : <p>Item with searched id doesnt exist</p>}          
         </div>         
       </Paper>
     </ThemeProvider>    

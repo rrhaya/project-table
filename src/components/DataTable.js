@@ -33,31 +33,34 @@ export default function DataTable({ data, totalItems, page, setPage }) {
             <TableCell>Pantone</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>        
-        {data && data.map(((element) => (
-            <TableRow key={element.id} style={{backgroundColor: element.color}}>
-              <TableCell>{element.id}</TableCell>
-              <TableCell>{element.name}</TableCell>
-              <TableCell>{element.year}</TableCell>
-              <TableCell>{element.color}</TableCell>
-              <TableCell>{element.pantone_value}</TableCell>
-            </TableRow>
-          )))
-        }          
+        <TableBody> 
+          {data.length>1 ? data.map(((element) => (
+              <TableRow key={element.id} style={{backgroundColor: element.color}}>
+                <TableCell>{element.id}</TableCell>
+                <TableCell>{element.name}</TableCell>
+                <TableCell>{element.year}</TableCell>
+                <TableCell>{element.color}</TableCell>
+                <TableCell>{element.pantone_value}</TableCell>
+              </TableRow>
+            ))) : <TableRow style={{backgroundColor: data.color}}>
+            <TableCell>{data.id}</TableCell>
+            <TableCell>{data.name}</TableCell>
+            <TableCell>{data.year}</TableCell>
+            <TableCell>{data.color}</TableCell>
+            <TableCell>{data.pantone_value}</TableCell>
+          </TableRow> 
+          }
         </TableBody>            
-      </Table>
-
+      </Table>      
       <TablePagination         
         component="div"
         rowsPerPageOptions={[5]}             
-        count={totalItems}
+        count={totalItems ? totalItems : 1}
         rowsPerPage={rowsPerPage}        
         page={page -1} 
         onPageChange={handleChangePage}        
         onRowsPerPageChange={handleChangeRowsPerPage}
-      /> 
-
-      {data.length === 0 && <p>Product with searched id doesnt exist </p>}
-    </TableContainer>
+      />      
+    </TableContainer>   
   )
 }
